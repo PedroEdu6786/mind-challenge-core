@@ -3,6 +3,7 @@ import { mock, MockProxy, mockReset } from 'jest-mock-extended'
 import { IUser } from '../../../interfaces/user/user.interface'
 import {
   makeCreateUser,
+  makeDeleteUserById,
   makeGetUserById,
   makeUpdateUserById,
 } from '../../../controller/userController'
@@ -18,6 +19,7 @@ jest.mock('../../../infra/repositories/user.repository', () => {
         if (userIds.includes(data.id)) return payload
         return null
       },
+      delete: (data: any) => {},
     },
   }
 })
@@ -112,6 +114,34 @@ describe('User module behaviour', () => {
     mockReq.body = {}
 
     await makeUpdateUserById(mockReq, mockRes)
+
+    expect(mockRes.status).toBeCalledWith(404)
+  })
+
+  it('Should not update a user given an non existing id', async () => {
+    const userId = 12342
+    mockReq.params.id = userId
+    mockReq.body = {}
+
+    await makeUpdateUserById(mockReq, mockRes)
+
+    expect(mockRes.status).toBeCalledWith(404)
+  })
+
+  it('Should delete a user given an id', async () => {
+    const userId = 1
+    mockReq.params.id = userId
+
+    await makeDeleteUserById(mockReq, mockRes)
+
+    expect(mockRes.status).toBeCalledWith(200)
+  })
+
+  it('Should not delete a user if id doesnt exist', async () => {
+    const userId = 1242
+    mockReq.params.id = userId
+
+    await makeDeleteUserById(mockReq, mockRes)
 
     expect(mockRes.status).toBeCalledWith(404)
   })

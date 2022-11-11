@@ -74,5 +74,24 @@ export const updateUserById: UpdateUser = async (
     }
   }
 
-  return Promise.resolve(userData)
+  return userData
+}
+
+export const deleteUserById: GetUser = async (userId: number) => {
+  const validUser: IUser = await getUserById(userId)
+
+  if (!validUser) {
+    return null
+  }
+
+  try {
+    await userRepository.delete(userId)
+    return validUser
+  } catch (err) {
+    if (err instanceof QueryFailedError) {
+      console.log(err.message)
+    }
+  }
+
+  return validUser
 }

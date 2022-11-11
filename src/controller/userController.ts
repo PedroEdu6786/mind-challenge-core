@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { IUser } from '../interfaces/user/user.interface'
 import { userService } from '../services/user'
-import { createUser, getUserById, updateUserById } from '../useCases/user'
+import { createUser, deleteUserById, getUserById, updateUserById } from '../useCases/user'
 import { UserValidator } from '../utils/validators/userValidator'
 
 export const makeGetUserById = async (req: Request, res: Response) => {
@@ -44,6 +44,19 @@ export const makeUpdateUserById = async (req: Request, res: Response) => {
 
   const updateUser = userService.makeUpdateUser(updateUserById)
   const data = await updateUser(userData, userId)
+
+  if (!data) {
+    return res.status(404).json({ message: 'User not found' })
+  }
+
+  return res.status(200).send(data)
+}
+
+export const makeDeleteUserById = async (req: Request, res: Response) => {
+  const userId: number = Number(req.params.id)
+
+  const deleteUser = userService.makeGetUser(deleteUserById)
+  const data = await deleteUser(userId)
 
   if (!data) {
     return res.status(404).json({ message: 'User not found' })
