@@ -1,4 +1,3 @@
-import { valid } from 'joi'
 import { QueryFailedError } from 'typeorm'
 import { User } from '../../dtos/user.dto'
 import { userRepository } from '../../infra/repositories/user.repository'
@@ -40,7 +39,7 @@ const userEmailExists = async (email: string) => {
   return Boolean(data)
 }
 
-const searchUserByEmail = async (email: string) => {
+export const searchUserByEmail = async (email: string) => {
   const user = await userRepository.findOneBy({ email: email })
   return user
 }
