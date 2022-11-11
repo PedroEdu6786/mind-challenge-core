@@ -1,15 +1,24 @@
-import express, { Express, Request, Response } from 'express'
+import express, { NextFunction, Request, Response } from 'express'
+import cors from 'cors'
 import dotenv from 'dotenv'
+import server, { PORT } from './server'
+import router from './routes'
 
 dotenv.config()
 
-const app: Express = express()
-const PORT = process.env.PORT || 8080
+server.use(cors())
+server.use(express.json())
+server.all('*', logRoute)
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server')
+server.use(router)
+
+server.listen(PORT, () => {
+  console.log(`Server is running at http://localhost:${PORT}`)
 })
 
-app.listen(PORT, () => {
-  console.log(`[server]: Server is running at https://localhost:${PORT}`)
-})
+function logRoute(req: Request, res: Response, next: NextFunction) {
+  console.log(req.path)
+  next()
+}
+
+export default server
