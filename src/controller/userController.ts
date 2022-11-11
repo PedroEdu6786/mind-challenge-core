@@ -1,7 +1,13 @@
 import { Request, Response } from 'express'
 import { IUser } from '../interfaces/user/user.interface'
 import { userService } from '../services/user'
-import { createUser, deleteUserById, getUserById, updateUserById } from '../useCases/user'
+import {
+  createUser,
+  deleteUserById,
+  getUserById,
+  updateUserById,
+} from '../useCases/user'
+import { bcryptHash } from '../utils/hashString'
 import { UserValidator } from '../utils/validators/userValidator'
 
 export const makeGetUserById = async (req: Request, res: Response) => {
@@ -25,6 +31,8 @@ export const makeCreateUser = async (req: Request, res: Response) => {
   if (error) {
     return res.status(400).json({ message: 'Invalid user data', error })
   }
+
+  value.password = await bcryptHash(value.password)
 
   const makeUser = userService.makeCreateUser(createUser)
   const data = await makeUser(value)

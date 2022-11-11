@@ -16,4 +16,16 @@ export class User {
 
   @Column({ select: false })
   password: string
+
+  @Column()
+  english_level: string
+
+  @Column()
+  cv_link: string
+
+  @Column()
+  is_admin: boolean
+
+  @Column()
+  is_superadmin: boolean
 }
