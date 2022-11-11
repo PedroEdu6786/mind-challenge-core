@@ -64,7 +64,6 @@ describe('User module behaviour', () => {
     mockReq.body = payload
 
     await makeCreateUser(mockReq, mockRes)
-    expect(mockRes.send).toBeCalledWith(payload)
     expect(mockRes.status).toBeCalledWith(201)
   })
 
