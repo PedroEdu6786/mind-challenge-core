@@ -1,10 +1,15 @@
-import server, { PORT } from './server'
-import { dbConfig } from './infra/database/db'
+import express, { Express, Request, Response } from 'express'
+import dotenv from 'dotenv'
 
-dbConfig().then(() => {
-  server.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`)
-  })
+dotenv.config()
+
+const app: Express = express()
+const PORT = process.env.PORT || 8080
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Express + TypeScript Server')
 })
 
-export default server
+app.listen(PORT, () => {
+  console.log(`[server]: Server is running at https://localhost:${PORT}`)
+})
