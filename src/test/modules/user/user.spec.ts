@@ -1,33 +1,118 @@
-import request from 'supertest'
-import server from '../../../index'
-import { User } from '../../../interfaces/user/User'
+import { getMockReq, getMockRes } from '@jest-mock/express'
+import { mock, MockProxy, mockReset } from 'jest-mock-extended'
+import { IUser } from '../../../interfaces/user/user.interface'
+import {
+  makeCreateUser,
+  makeGetUserById,
+  makeUpdateUserById,
+} from '../../../controller/userController'
+import { userActions } from '../../../useCases/user'
 
-const payload: User = {
+const userIds = [1]
+
+jest.mock('../../../infra/repositories/user.repository', () => {
+  return {
+    userRepository: {
+      save: (data: any) => data,
+      findOneBy: (data: any) => {
+        if (userIds.includes(data.id)) return payload
+        return null
+      },
+    },
+  }
+})
+
+const payload: IUser = {
   name: 'Pedro',
   email: 'pedro@gmail.com',
   password: 'password',
 }
 
+let mockUserActions: MockProxy<typeof userActions>
+let mockReq: any
+let mockRes: any
+
 describe('User module behaviour', () => {
+  beforeAll(() => {
+    mockUserActions = mock<typeof userActions>()
+
+    mockReq = getMockReq()
+    ;({ res: mockRes } = getMockRes())
+
+    jest.mock('../../../infra/repositories/user.repository', () => {
+      return {
+        userRepository: {
+          save: (data: any) => data,
+          findOneBy: (data: any) => {
+            if (userIds.includes(data.id)) return payload
+            return null
+          },
+        },
+      }
+    })
+  })
+
+  afterEach(() => {
+    mockReset(mockUserActions)
+    mockReset(mockUserActions)
+    jest.clearAllMocks()
+  })
+
   it('Should return a new user', async () => {
-    const res = await request(server).post('/users').send(payload)
-    expect(res.body).toEqual(payload)
-    expect(res.statusCode).toBe(201)
+    mockReq.body = payload
+
+    await makeCreateUser(mockReq, mockRes)
+    expect(mockRes.send).toBeCalledWith(payload)
+    expect(mockRes.status).toBeCalledWith(201)
   })
 
   it('Should fail if missing attributes email, name or password', async () => {
-    const payload = {}
-    const res = await request(server).post('/users').send(payload)
-    expect(res.statusCode).toBe(400)
-    expect(res.body).toHaveProperty('message')
-    expect(res.body).toHaveProperty('error')
+    const failPayload = {}
+    mockReq.body = failPayload
+
+    await makeCreateUser(mockReq, mockRes)
+
+    expect(mockRes.json).toHaveBeenCalled()
+    expect(mockRes.status).toBeCalledWith(400)
   })
 
   it('Should return a user by id', async () => {
-    const res = await request(server).get(`/users/${1}`)
-    expect(res.statusCode).toBe(200)
-    expect(res.body).toHaveProperty('name')
-    expect(res.body).toHaveProperty('email')
-    expect(res.body).toHaveProperty('password')
+    const userId = 1
+    mockReq.params.id = userId
+    await makeGetUserById(mockReq, mockRes)
+
+    expect(mockRes.status).toBeCalledWith(200)
+    expect(mockRes.send).toBeCalledWith(payload)
+  })
+
+  it('Should not find a user with a non existing id', async () => {
+    const userId = 234234
+    mockReq.params.id = userId
+    await makeGetUserById(mockReq, mockRes)
+
+    expect(mockRes.status).toBeCalledWith(404)
+  })
+
+  it('Should update a user given an existing id', async () => {
+    const userId = 1
+    const updatePayload = {
+      name: 'test',
+    }
+    mockReq.params.id = userId
+    mockReq.body = updatePayload
+    await makeUpdateUserById(mockReq, mockRes)
+
+    expect(mockRes.status).toBeCalledWith(200)
+    expect(mockRes.send).toBeCalledWith({ id: 1, ...updatePayload })
+  })
+
+  it('Should not update a user given an non existing id', async () => {
+    const userId = 12342
+    mockReq.params.id = userId
+    mockReq.body = {}
+
+    await makeUpdateUserById(mockReq, mockRes)
+
+    expect(mockRes.status).toBeCalledWith(404)
   })
 })
