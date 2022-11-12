@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import router from './routes'
 import { logRoute } from './middleware/log'
+import { errorHandler, notFound } from './middleware/errorMiddleware'
 
 dotenv.config()
 
@@ -14,5 +15,8 @@ server.use(express.json())
 server.all('*', logRoute)
 
 server.use('/api', router)
+
+server.use(notFound)
+server.use(errorHandler)
 
 export default server

@@ -6,3 +6,8 @@ export const bcryptHash = async (
 ): Promise<string> => {
   return await bcrypt.hash(stringHash, hashLength)
 }
+
+export const compareHashString = async (
+  compareString: string,
+  stringHash: string
+) => await bcrypt.compare(compareString, stringHash)

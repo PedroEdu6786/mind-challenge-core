@@ -1,10 +1,10 @@
-import { valid } from 'joi'
 import { QueryFailedError } from 'typeorm'
 import { User } from '../../dtos/user.dto'
 import { userRepository } from '../../infra/repositories/user.repository'
 import {
   BuildUser,
   GetUser,
+  GetUsers,
   UpdateUser,
 } from '../../interfaces/user/buildUser.type'
 import { IUser } from '../../interfaces/user/user.interface'
@@ -40,13 +40,18 @@ const userEmailExists = async (email: string) => {
   return Boolean(data)
 }
 
-const searchUserByEmail = async (email: string) => {
+export const searchUserByEmail = async (email: string) => {
   const user = await userRepository.findOneBy({ email: email })
   return user
 }
 
 export const getUserById: GetUser = async (userId: number) => {
   const user = await userRepository.findOneBy({ id: userId })
+  return user
+}
+
+export const getAllUsers: GetUsers = async () => {
+  const user = await userRepository.findBy({})
   return user
 }
 
