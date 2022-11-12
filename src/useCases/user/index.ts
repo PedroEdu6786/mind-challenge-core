@@ -4,6 +4,7 @@ import { userRepository } from '../../infra/repositories/user.repository'
 import {
   BuildUser,
   GetUser,
+  GetUsers,
   UpdateUser,
 } from '../../interfaces/user/buildUser.type'
 import { IUser } from '../../interfaces/user/user.interface'
@@ -46,6 +47,11 @@ export const searchUserByEmail = async (email: string) => {
 
 export const getUserById: GetUser = async (userId: number) => {
   const user = await userRepository.findOneBy({ id: userId })
+  return user
+}
+
+export const getAllUsers: GetUsers = async () => {
+  const user = await userRepository.findBy({})
   return user
 }
 

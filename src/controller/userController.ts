@@ -4,6 +4,7 @@ import { userService } from '../services/user'
 import {
   createUser,
   deleteUserById,
+  getAllUsers,
   getUserById,
   updateUserById,
 } from '../useCases/user'
@@ -15,6 +16,18 @@ export const makeGetUserById = async (req: Request, res: Response) => {
   const lookupUser = userService.makeGetUser(getUserById)
 
   const data = await lookupUser(userId)
+
+  if (!data) {
+    return res.status(404).json({ message: 'User not found' })
+  }
+
+  res.status(200).send(data)
+}
+
+export const makeGetAllUsers = async (req: Request, res: Response) => {
+  const lookupUsers = userService.makeGetAllUsers(getAllUsers)
+
+  const data = await lookupUsers()
 
   if (!data) {
     return res.status(404).json({ message: 'User not found' })

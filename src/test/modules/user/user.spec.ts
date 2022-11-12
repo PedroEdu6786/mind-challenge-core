@@ -4,6 +4,7 @@ import { IUser } from '../../../interfaces/user/user.interface'
 import {
   makeCreateUser,
   makeDeleteUserById,
+  makeGetAllUsers,
   makeGetUserById,
   makeUpdateUserById,
 } from '../../../controller/userController'
@@ -19,7 +20,7 @@ jest.mock('../../../infra/repositories/user.repository', () => {
         if (userIds.includes(data.id)) return payload
         return null
       },
-      delete: (data: any) => {},
+      findBy: (data: any) => [payload],
     },
   }
 })
@@ -49,6 +50,7 @@ describe('User module behaviour', () => {
             if (userIds.includes(data.id)) return payload
             return null
           },
+          findBy: (data: any) => [payload],
         },
       }
     })
@@ -143,5 +145,12 @@ describe('User module behaviour', () => {
     await makeDeleteUserById(mockReq, mockRes)
 
     expect(mockRes.status).toBeCalledWith(404)
+  })
+
+  it('Should return all users', async () => {
+    await makeGetAllUsers(mockReq, mockRes)
+
+    expect(mockRes.status).toBeCalledWith(200)
+    expect(mockRes.send).toHaveBeenCalled()
   })
 })
