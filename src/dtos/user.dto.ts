@@ -17,15 +17,15 @@ export class User {
   @Column({ select: false })
   password: string
 
-  @Column()
+  @Column({ default: '' })
   english_level: string
 
-  @Column()
+  @Column({ default: '' })
   cv_link: string
 
-  @Column()
+  @Column({ default: false })
   is_admin: boolean
 
-  @Column()
+  @Column({ default: false })
   is_superadmin: boolean
 }
