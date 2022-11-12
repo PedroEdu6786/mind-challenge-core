@@ -38,3 +38,17 @@ export const authHandler = async (
     res.status(404).json({ message: 'Not authorized, missing token' })
   }
 }
+
+export const adminHandler = (
+  req: RequestUser,
+  res: Response,
+  next: NextFunction
+) => {
+  const { userData } = req
+
+  if (userData.is_admin) {
+    return next()
+  }
+
+  res.status(401).json({ message: 'Not authorized as admin' })
+}
