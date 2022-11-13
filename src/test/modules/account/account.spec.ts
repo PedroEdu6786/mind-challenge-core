@@ -1,23 +1,27 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
-import { makeCreateAccount } from '../../../controller/accountController'
+import {
+  makeCreateAccount,
+  makeGetAllAccounts,
+} from '../../../controller/accountController'
 import { IAccount } from '../../../interfaces/account/account.type'
 
 let mockReq: any
 let mockRes: any
-
-jest.mock('../../../infra/repositories/account.repository', () => {
-  return {
-    accountRepository: {
-      save: (data: any) => data,
-    },
-  }
-})
 
 const payload: IAccount = {
   accountName: 'Pedro',
   clientName: 'UnHolyPipe',
   headOfOperation: 'Pedro Cruz',
 }
+
+jest.mock('../../../infra/repositories/account.repository', () => {
+  return {
+    accountRepository: {
+      save: (data: any) => data,
+      findBy: (data: any) => [payload],
+    },
+  }
+})
 
 describe('Account module behaviour', () => {
   beforeAll(() => {
@@ -28,6 +32,7 @@ describe('Account module behaviour', () => {
       return {
         accountRepository: {
           save: (data: any) => data,
+          findBy: (data: any) => [payload],
         },
       }
     })
@@ -51,5 +56,13 @@ describe('Account module behaviour', () => {
     await makeCreateAccount(mockReq, mockRes)
     expect(mockRes.status).toBeCalledWith(400)
     expect(mockRes.json).toBeCalled()
+  })
+
+  it('Should return all accounts', async () => {
+    mockReq.body = {}
+
+    await makeGetAllAccounts(mockReq, mockRes)
+    expect(mockRes.status).toBeCalledWith(200)
+    expect(mockRes.send).toBeCalled()
   })
 })
