@@ -1,16 +1,19 @@
 import 'reflect-metadata'
+import dotenv from 'dotenv'
 import { DataSource } from 'typeorm'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 
-// import { User } from '../../entities/User'
+dotenv.config()
+
+const { HOSTNAME, DB_PORT, USERNAME, PASSWORD, DB_NAME } = process.env
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
-  host: 'localhost',
-  port: 3306,
-  username: 'root',
-  password: 'qwerty',
-  database: 'mind_challenge',
+  host: HOSTNAME,
+  port: Number(DB_PORT),
+  username: USERNAME,
+  password: PASSWORD,
+  database: DB_NAME,
   synchronize: true,
   logging: false,
   entities: ['dist/dtos/**/*.dto.{js,ts}'],
@@ -18,17 +21,3 @@ export const AppDataSource = new DataSource({
   subscribers: [],
   namingStrategy: new SnakeNamingStrategy(),
 })
-
-// export const AppDataSource = new DataSource({
-//   type: 'mysql',
-//   host: HOSTNAME,
-//   port: Number(PORT),
-//   username: USERNAME,
-//   password: PASSWORD,
-//   database: DB_NAME,
-//   synchronize: true,
-//   logging: false,
-//   entities: ['dist/dtos/**/*.js'],
-//   migrations: [],
-//   subscribers: [],
-// })
