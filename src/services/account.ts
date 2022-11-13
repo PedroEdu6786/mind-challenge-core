@@ -2,6 +2,7 @@ import { IAccount } from '../interfaces/account/account.type'
 import {
   BuildAccount,
   GetAccounts,
+  UpdateAccount,
 } from '../interfaces/account/buildAccount.type'
 
 export const accountService = Object.freeze({
@@ -9,6 +10,8 @@ export const accountService = Object.freeze({
     makeCreateAccount(buildAccount),
   makeGetAllAccounts: (getAccounts: GetAccounts) =>
     makeGetAllAccounts(getAccounts),
+  makeUpdateAccountById: (updateAccount: UpdateAccount) =>
+    makeUpdateAccountById(updateAccount),
 })
 
 const makeCreateAccount =
@@ -23,3 +26,11 @@ const makeGetAllAccounts = (getAccounts: GetAccounts) => async () => {
 
   return account
 }
+
+const makeUpdateAccountById =
+  (updateAccount: UpdateAccount) =>
+  async (accountData: IAccount, accountId: number) => {
+    const account = await updateAccount(accountData, accountId)
+
+    return account
+  }
