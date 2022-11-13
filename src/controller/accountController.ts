@@ -1,6 +1,11 @@
 import { Request, Response } from 'express'
 import { accountService } from '../services/account'
-import { createAccount, getAllAccounts, updateAccountById } from '../useCases/account'
+import {
+  createAccount,
+  deleteAccountById,
+  getAllAccounts,
+  updateAccountById,
+} from '../useCases/account'
 import { AccountValidator } from '../utils/validators/accountValidator'
 
 export const makeCreateAccount = async (req: Request, res: Response) => {
@@ -37,10 +42,23 @@ export const makeGetAllAccounts = async (req: Request, res: Response) => {
 
 export const makeUpdateAccountById = async (req: Request, res: Response) => {
   const accountData = req.body
-  const userId: number = Number(req.params.id)
+  const accountId: number = Number(req.params.id)
 
   const updateAccount = accountService.makeUpdateAccountById(updateAccountById)
-  const data = await updateAccount(accountData, userId)
+  const data = await updateAccount(accountData, accountId)
+
+  if (!data) {
+    return res.status(404).json({ message: 'Account not found' })
+  }
+
+  return res.status(200).send(data)
+}
+
+export const makeDeleteAccountById = async (req: Request, res: Response) => {
+  const accountId: number = Number(req.params.id)
+
+  const deleteAccount = accountService.makeDeleteAccountById(deleteAccountById)
+  const data = await deleteAccount(accountId)
 
   if (!data) {
     return res.status(404).json({ message: 'Account not found' })

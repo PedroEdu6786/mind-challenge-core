@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import {
   makeCreateAccount,
+  makeDeleteAccountById,
   makeGetAllAccounts,
   makeUpdateAccountById,
 } from '../controller/accountController'
@@ -11,6 +12,7 @@ const AccountRouter = Router()
 
 AccountRouter.route('/:id')
   .put(authHandler, adminHandler, makeUpdateAccountById)
+  .delete(authHandler, adminHandler, makeDeleteAccountById)
   .all(methodNotAllowed)
 AccountRouter.route('/')
   .get(authHandler, adminHandler, makeGetAllAccounts)

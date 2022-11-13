@@ -1,5 +1,6 @@
 import { IAccount } from '../interfaces/account/account.type'
 import {
+  BaseIdAccount,
   BuildAccount,
   GetAccounts,
   UpdateAccount,
@@ -12,6 +13,8 @@ export const accountService = Object.freeze({
     makeGetAllAccounts(getAccounts),
   makeUpdateAccountById: (updateAccount: UpdateAccount) =>
     makeUpdateAccountById(updateAccount),
+  makeDeleteAccountById: (deleteAccount: BaseIdAccount) =>
+    makeDeleteAccountById(deleteAccount),
 })
 
 const makeCreateAccount =
@@ -31,6 +34,14 @@ const makeUpdateAccountById =
   (updateAccount: UpdateAccount) =>
   async (accountData: IAccount, accountId: number) => {
     const account = await updateAccount(accountData, accountId)
+
+    return account
+  }
+
+const makeDeleteAccountById =
+  (deleteAccount: BaseIdAccount) =>
+  async (accountId: number) => {
+    const account = await deleteAccount(accountId)
 
     return account
   }

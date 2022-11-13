@@ -1,6 +1,7 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
 import {
   makeCreateAccount,
+  makeDeleteAccountById,
   makeGetAllAccounts,
   makeUpdateAccountById,
 } from '../../../controller/accountController'
@@ -92,6 +93,24 @@ describe('Account module behaviour', () => {
     mockReq.body = {}
 
     await makeUpdateAccountById(mockReq, mockRes)
+
+    expect(mockRes.status).toBeCalledWith(404)
+  })
+
+  it('Should delete a user given an id', async () => {
+    const accountId = 1
+    mockReq.params.id = accountId
+
+    await makeDeleteAccountById(mockReq, mockRes)
+
+    expect(mockRes.status).toBeCalledWith(200)
+  })
+
+  it('Should not delete a user if id doesnt exist', async () => {
+    const accountId = 1242
+    mockReq.params.id = accountId
+
+    await makeDeleteAccountById(mockReq, mockRes)
 
     expect(mockRes.status).toBeCalledWith(404)
   })
