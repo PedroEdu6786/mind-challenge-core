@@ -1,6 +1,7 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
 import {
   makeCreateTeam,
+  makeDeleteTeamById,
   makeGetAllAccountTeams,
 } from '../../../controller/teamController'
 import { ITeam } from '../../../interfaces/team/team.type'
@@ -68,5 +69,21 @@ describe('Team module behaviour', () => {
     await makeGetAllAccountTeams(mockReq, mockRes)
     expect(mockRes.status).toBeCalledWith(200)
     expect(mockRes.send).toBeCalled()
+  })
+
+  it('Should delete a team', async () => {
+    mockReq.params.teamId = 1
+
+    await makeDeleteTeamById(mockReq, mockRes)
+    expect(mockRes.status).toBeCalledWith(200)
+    expect(mockRes.send).toBeCalled()
+  })
+
+  it('Should not delete a not found team', async () => {
+    mockReq.params.teamId = 2
+
+    await makeDeleteTeamById(mockReq, mockRes)
+    expect(mockRes.status).toBeCalledWith(400)
+    expect(mockRes.json).toBeCalled()
   })
 })

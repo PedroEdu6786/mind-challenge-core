@@ -2,6 +2,7 @@ import { QueryFailedError } from 'typeorm'
 import { Team } from '../../dtos/team.dto'
 import { teamRepository } from '../../infra/repositories/team.repository'
 import {
+  BaseIdTeam,
   BuildTeam,
   GetAccountTeams,
 } from '../../interfaces/team/buildTeam.type'
@@ -28,4 +29,29 @@ export const getTeamsByAccountId: GetAccountTeams = async (
   const teams = await teamRepository.findBy({ idAccount })
 
   return teams
+}
+
+const getTeamById = async (teamId: number) => {
+  const team = await teamRepository.findOneBy({ id: teamId })
+
+  return team
+}
+
+export const deleteTeamById: BaseIdTeam = async (teamId: number) => {
+  const validTeam: ITeam = await getTeamById(teamId)
+
+  if (!validTeam) {
+    return null
+  }
+
+  try {
+    await teamRepository.delete(teamId)
+    return validTeam
+  } catch (err) {
+    if (err instanceof QueryFailedError) {
+      console.log(err.message)
+    }
+  }
+
+  return validTeam
 }
