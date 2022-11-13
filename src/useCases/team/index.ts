@@ -1,7 +1,10 @@
 import { QueryFailedError } from 'typeorm'
 import { Team } from '../../dtos/team.dto'
 import { teamRepository } from '../../infra/repositories/team.repository'
-import { BuildTeam } from '../../interfaces/team/buildTeam.type'
+import {
+  BuildTeam,
+  GetAccountTeams,
+} from '../../interfaces/team/buildTeam.type'
 import { ITeam } from '../../interfaces/team/team.type'
 
 export const createTeam: BuildTeam = async (teamData: ITeam) => {
@@ -17,4 +20,12 @@ export const createTeam: BuildTeam = async (teamData: ITeam) => {
   }
 
   return null
+}
+
+export const getTeamsByAccountId: GetAccountTeams = async (
+  idAccount: number
+) => {
+  const teams = await teamRepository.findBy({ idAccount })
+
+  return teams
 }

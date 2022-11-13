@@ -11,6 +11,6 @@ export class Team {
   @Column()
   idAccount: number
 
-  @Column()
+  @Column({ default: '' })
   teamName: string
 }
