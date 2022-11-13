@@ -46,7 +46,7 @@ export const adminHandler = (
 ) => {
   const { userData } = req
 
-  if (userData.is_admin) {
+  if (userData.isAdmin) {
     return next()
   }
 
