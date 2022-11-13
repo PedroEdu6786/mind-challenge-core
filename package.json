@@ -35,7 +35,8 @@
     "mysql2": "^2.3.3",
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "0.3.10"
+    "typeorm": "0.3.10",
+    "typeorm-naming-strategies": "^4.1.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

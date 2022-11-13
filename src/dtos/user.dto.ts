@@ -18,14 +18,14 @@ export class User {
   password: string
 
   @Column({ default: '' })
-  english_level: string
+  englishLevel: string
 
   @Column({ default: '' })
-  cv_link: string
+  cvLink: string
 
   @Column({ default: false })
-  is_admin: boolean
+  isAdmin: boolean
 
   @Column({ default: false })
-  is_superadmin: boolean
+  isSuperadmin: boolean
 }

@@ -1,5 +1,7 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
+
 // import { User } from '../../entities/User'
 
 export const AppDataSource = new DataSource({
@@ -14,6 +16,7 @@ export const AppDataSource = new DataSource({
   entities: ['dist/dtos/**/*.dto.{js,ts}'],
   migrations: [],
   subscribers: [],
+  namingStrategy: new SnakeNamingStrategy(),
 })
 
 // export const AppDataSource = new DataSource({
