@@ -1,0 +1,20 @@
+import { QueryFailedError } from 'typeorm'
+import { Team } from '../../dtos/team.dto'
+import { teamRepository } from '../../infra/repositories/team.repository'
+import { BuildTeam } from '../../interfaces/team/buildTeam.type'
+import { ITeam } from '../../interfaces/team/team.type'
+
+export const createTeam: BuildTeam = async (teamData: ITeam) => {
+  const newTeam = new Team(teamData)
+
+  try {
+    const data = await teamRepository.save(newTeam)
+    return data
+  } catch (err) {
+    if (err instanceof QueryFailedError) {
+      console.log(err.message)
+    }
+  }
+
+  return null
+}
