@@ -2,7 +2,7 @@ import { getMockReq, getMockRes } from '@jest-mock/express'
 import { mock, MockProxy, mockReset } from 'jest-mock-extended'
 import { makeUserLogin } from '../../../controller/authController'
 import { IAuthData } from '../../../interfaces/auth/auth.interface'
-import { userActions } from '../../../useCases/user'
+import { userActions } from '../../../services/user'
 
 let mockUserActions: MockProxy<typeof userActions>
 let mockReq: any

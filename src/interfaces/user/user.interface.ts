@@ -8,4 +8,5 @@ export type IUser = {
   cvLink?: string
   isAdmin?: boolean
   isSuperadmin?: boolean
+  teamId?: number
 }

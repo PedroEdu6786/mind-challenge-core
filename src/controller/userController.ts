@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { IUser } from '../interfaces/user/user.interface'
-import { userService } from '../services/user'
+import { userService } from '../useCases/user'
 import {
   createUser,
   deleteUserById,
   getAllUsers,
   getUserById,
   updateUserById,
-} from '../useCases/user'
+} from '../services/user/index'
 import { bcryptHash } from '../utils/hashString'
 import { UserValidator } from '../utils/validators/userValidator'
 

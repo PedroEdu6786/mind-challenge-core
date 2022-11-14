@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { authService } from '../services/auth'
-import { loginUser } from '../useCases/auth'
+import { loginUser } from '../services/auth/index'
+import { authService } from '../useCases/auth'
 
 export const makeUserLogin = async (req: Request, res: Response) => {
   const authData = req.body

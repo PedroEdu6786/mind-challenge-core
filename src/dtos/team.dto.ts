@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
+import { User } from './user.dto'
 
 @Entity()
 export class Team {
@@ -13,4 +14,7 @@ export class Team {
 
   @Column({ default: '' })
   teamName: string
+
+  @OneToMany(() => User, (user) => user.team)
+  users: Team[]
 }

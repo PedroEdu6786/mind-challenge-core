@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import { accountService } from '../services/account'
+import { accountService } from '../useCases/account'
 import {
   createAccount,
   deleteAccountById,
   getAllAccounts,
   updateAccountById,
-} from '../useCases/account'
+} from '../services/account/index'
 import { AccountValidator } from '../utils/validators/accountValidator'
 
 export const makeCreateAccount = async (req: Request, res: Response) => {

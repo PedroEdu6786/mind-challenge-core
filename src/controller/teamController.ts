@@ -1,32 +1,13 @@
 import { Request, Response } from 'express'
-import { teamService } from '../services/team'
+import { teamService } from '../useCases/team'
 import {
   createTeam,
   deleteTeamById,
   getTeamsByAccountId,
-} from '../useCases/team'
+} from '../services/team/index'
 import { TeamValidator } from '../utils/validators/teamValidator'
 
 export const makeCreateTeam = async (req: Request, res: Response) => {
-  const teamData = req.body
-
-  const { error, value } = TeamValidator.validate(teamData)
-
-  if (error) {
-    return res.status(400).json({ message: 'Invalid team data', error })
-  }
-
-  const makeTeam = teamService.makeCreateTeam(createTeam)
-  const data = await makeTeam(value)
-
-  if (!data) {
-    return res.status(400).json({ message: 'Team could not be created' })
-  }
-
-  return res.status(201).send(data)
-}
-
-export const makeAddUserToTeam = async (req: Request, res: Response) => {
   const teamData = req.body
 
   const { error, value } = TeamValidator.validate(teamData)

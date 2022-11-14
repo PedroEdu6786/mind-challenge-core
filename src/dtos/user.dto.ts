@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm'
+import { Team } from './team.dto'
 
 @Entity()
 export class User {
@@ -28,4 +29,10 @@ export class User {
 
   @Column({ default: false })
   isSuperadmin: boolean
+
+  @Column({ nullable: true })
+  teamId: number
+
+  @ManyToOne(() => Team, (team) => team.users)
+  team: Team
 }

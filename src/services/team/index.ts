@@ -31,7 +31,7 @@ export const getTeamsByAccountId: GetAccountTeams = async (
   return teams
 }
 
-const getTeamById = async (teamId: number) => {
+export const getTeamById = async (teamId: number) => {
   const team = await teamRepository.findOneBy({ id: teamId })
 
   return team
