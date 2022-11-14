@@ -21,7 +21,6 @@ export const addUserTeam: BuildMember = async (
     return null
   }
 
-
   user.team = team
 
   try {

@@ -49,4 +49,28 @@ describe('User - team operations', () => {
     expect(mockRes.status).toBeCalledWith(200)
     expect(mockRes.send).toBeCalled()
   })
+
+  it('Should fail if missing attributes', async () => {
+    mockReq.body = {}
+
+    await makeAddUserTeam(mockReq, mockRes)
+    expect(mockRes.status).toBeCalledWith(400)
+    expect(mockRes.json).toBeCalled()
+  })
+
+  it('Should fail if user not found', async () => {
+    mockReq.body = { ...payload, userId: 2 }
+
+    await makeAddUserTeam(mockReq, mockRes)
+    expect(mockRes.status).toBeCalledWith(400)
+    expect(mockRes.json).toBeCalled()
+  })
+
+  it('Should fail if team not found', async () => {
+    mockReq.body = { ...payload, idTeam: 2 }
+
+    await makeAddUserTeam(mockReq, mockRes)
+    expect(mockRes.status).toBeCalledWith(400)
+    expect(mockRes.json).toBeCalled()
+  })
 })
