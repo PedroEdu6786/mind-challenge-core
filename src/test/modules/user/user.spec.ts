@@ -8,7 +8,7 @@ import {
   makeGetUserById,
   makeUpdateUserById,
 } from '../../../controller/userController'
-import { userActions } from '../../../useCases/user'
+import { userActions } from '../../../services/user'
 
 const userIds = [1]
 

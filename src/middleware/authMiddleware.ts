@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { IUser } from '../interfaces/user/user.interface'
-import { getUserById } from '../useCases/user'
+import { getUserById } from '../services/user/index'
 
 interface RequestUser extends Request {
   userData: IUser

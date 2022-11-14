@@ -1,12 +1,16 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
-import { makeCreateTeam } from '../../../controller/teamController'
+import {
+  makeCreateTeam,
+  makeDeleteTeamById,
+  makeGetAllAccountTeams,
+} from '../../../controller/teamController'
 import { ITeam } from '../../../interfaces/team/team.type'
 
 let mockReq: any
 let mockRes: any
 
 const payload: ITeam = {
-  idAccount: 2
+  idAccount: 2,
 }
 
 const accountIds = [1]
@@ -43,7 +47,7 @@ describe('Team module behaviour', () => {
     jest.clearAllMocks()
   })
 
-  it("Should create a new team", async () => {
+  it('Should create a new team', async () => {
     mockReq.body = payload
 
     await makeCreateTeam(mockReq, mockRes)
@@ -51,10 +55,34 @@ describe('Team module behaviour', () => {
     expect(mockRes.send).toBeCalled()
   })
 
-  it("Should fail create if missing accountId in payload", async () => {
+  it('Should fail create if missing accountId in payload', async () => {
     mockReq.body = {}
 
     await makeCreateTeam(mockReq, mockRes)
+    expect(mockRes.status).toBeCalledWith(400)
+    expect(mockRes.json).toBeCalled()
+  })
+
+  it('Should get all teams from an account', async () => {
+    mockReq.params.accountId = payload.idAccount
+
+    await makeGetAllAccountTeams(mockReq, mockRes)
+    expect(mockRes.status).toBeCalledWith(200)
+    expect(mockRes.send).toBeCalled()
+  })
+
+  it('Should delete a team', async () => {
+    mockReq.params.teamId = 1
+
+    await makeDeleteTeamById(mockReq, mockRes)
+    expect(mockRes.status).toBeCalledWith(200)
+    expect(mockRes.send).toBeCalled()
+  })
+
+  it('Should not delete a not found team', async () => {
+    mockReq.params.teamId = 2
+
+    await makeDeleteTeamById(mockReq, mockRes)
     expect(mockRes.status).toBeCalledWith(400)
     expect(mockRes.json).toBeCalled()
   })
