@@ -41,6 +41,8 @@ export const makeCreateUser = async (req: Request, res: Response) => {
 
   const { error, value } = UserValidator.validate(userData)
 
+  console.log(userData, error, value)
+
   if (error) {
     return res.status(400).json({ message: 'Invalid user data', error })
   }
