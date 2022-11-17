@@ -12,8 +12,8 @@ import { methodNotAllowed } from '../middleware/errorMiddleware'
 const UserRouter = Router()
 
 UserRouter.route('/:id')
-  .get(authHandler, adminHandler, makeGetUserById)
-  .put(authHandler, adminHandler, makeUpdateUserById)
+  .get(authHandler, makeGetUserById)
+  .put(authHandler, makeUpdateUserById)
   .delete(authHandler, adminHandler, makeDeleteUserById)
   .all(methodNotAllowed)
 UserRouter.route('/')

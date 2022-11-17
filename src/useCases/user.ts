@@ -1,6 +1,7 @@
 import {
   BuildUser,
   GetUser,
+  GetUserByEmail,
   GetUsers,
   UpdateUser,
 } from '../interfaces/user/buildUser.type'
@@ -9,6 +10,7 @@ import { IUser } from '../interfaces/user/user.interface'
 export const userService = Object.freeze({
   makeCreateUser: (buildUser: BuildUser) => makeCreateUser(buildUser),
   makeGetUser: (getUser: GetUser) => makeGetUser(getUser),
+  makeGetUserByEmail: (getUser: GetUserByEmail) => makeGetUserEmail(getUser),
   makeUpdateUser: (updateUser: UpdateUser) => makeUpdateUser(updateUser),
   makeGetAllUsers: (getUsers: GetUsers) => makeGetAllUsers(getUsers),
 })
@@ -31,6 +33,14 @@ const makeGetUser =
   (getUser: GetUser) =>
   async (userId: number): Promise<IUser> => {
     const user = await getUser(userId)
+
+    return user
+  }
+
+const makeGetUserEmail =
+  (getUser: GetUserByEmail) =>
+  async (email: string): Promise<IUser> => {
+    const user = await getUser(email)
 
     return user
   }

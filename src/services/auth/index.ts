@@ -19,6 +19,7 @@ export const loginUser: LoginUser = async (authData: IAuthData) => {
   if (validPassword) {
     return {
       email: validUser.email,
+      userId: validUser.id,
       token: await generateToken(validUser),
       isAdmin: validUser.isAdmin
     }
