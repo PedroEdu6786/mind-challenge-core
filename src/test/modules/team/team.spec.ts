@@ -10,7 +10,7 @@ let mockReq: any
 let mockRes: any
 
 const payload: ITeam = {
-  idAccount: 2,
+  accountId: 2,
 }
 
 const accountIds = [1]
@@ -64,7 +64,7 @@ describe('Team module behaviour', () => {
   })
 
   it('Should get all teams from an account', async () => {
-    mockReq.params.accountId = payload.idAccount
+    mockReq.params.accountId = payload.accountId
 
     await makeGetAllAccountTeams(mockReq, mockRes)
     expect(mockRes.status).toBeCalledWith(200)

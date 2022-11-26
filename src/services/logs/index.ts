@@ -8,7 +8,7 @@ import { ILogs } from '../../interfaces/logs/logs.type'
 export const createLogs: BuildLogs = async (logsData: ILogs) => {
   const team = await findTeamById(logsData.teamId)
 
-  const logPayload = { ...logsData, accountId: team.idAccount }
+  const logPayload = { ...logsData, accountId: team.accountId }
 
   const newLog = new Logs(logPayload)
 
@@ -29,6 +29,7 @@ export const getLogs: GetLogs = async (accountId: number) => {
     where: {
       accountId,
     },
+    relations: { user: true },
   })
 
   return logs as ILogs[]

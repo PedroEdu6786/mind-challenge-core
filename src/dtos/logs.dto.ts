@@ -39,5 +39,5 @@ export class Logs {
   teams: Team[]
 
   @ManyToOne(() => User, (user) => user.logs)
-  users: User[]
+  user: User
 }

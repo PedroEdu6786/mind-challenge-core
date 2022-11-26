@@ -47,6 +47,6 @@ export class User {
   @ManyToOne(() => Team, (team) => team.users, { onDelete: 'SET NULL' })
   team: Team
 
-  @OneToMany(() => Logs, (logs) => logs.teams)
+  @OneToMany(() => Logs, (logs) => logs.user)
   logs: Logs[]
 }
