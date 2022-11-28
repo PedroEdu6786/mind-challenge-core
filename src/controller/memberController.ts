@@ -66,6 +66,7 @@ export const makeUpdateUserTeam = async (req: Request, res: Response) => {
       .json({ message: 'User could not be updated in team' })
   }
 
+  console.log(data)
   const addLogs = logsService.makeCreateLogs(createLogs)
   await addLogs({
     userId: memberData.idUser,

@@ -32,15 +32,6 @@ describe('Team module behaviour', () => {
   beforeAll(() => {
     mockReq = getMockReq()
     ;({ res: mockRes } = getMockRes())
-
-    jest.mock('../../../infra/repositories/team.repository', () => {
-      return {
-        teamRepository: {
-          save: (data: any) => data,
-          findBy: (data: any) => [payload],
-        },
-      }
-    })
   })
 
   afterEach(() => {

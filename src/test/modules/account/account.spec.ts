@@ -35,15 +35,6 @@ describe('Account module behaviour', () => {
   beforeAll(() => {
     mockReq = getMockReq()
     ;({ res: mockRes } = getMockRes())
-
-    jest.mock('../../../infra/repositories/account.repository', () => {
-      return {
-        accountRepository: {
-          save: (data: any) => data,
-          findBy: (data: any) => [payload],
-        },
-      }
-    })
   })
 
   afterEach(() => {

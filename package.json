@@ -25,6 +25,8 @@
   "homepage": "https://github.com/PedroEdu6786/mind-challenge-core#readme",
   "dependencies": {
     "@jest-mock/express": "^2.0.1",
+    "@sentry/node": "^7.21.1",
+    "@sentry/tracing": "^7.21.1",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
