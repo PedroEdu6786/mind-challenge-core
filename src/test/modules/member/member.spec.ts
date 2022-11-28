@@ -22,6 +22,7 @@ jest.mock('../../../infra/repositories/user.repository', () => {
       findBy: (data: any) => [payload],
       findOneBy: (data: any) => {
         if (accountIds.includes(data.id)) return payload
+        if (data.id === 2) return { teamId: 1, idTeam: undefined }
         return null
       },
     },
@@ -34,7 +35,9 @@ jest.mock('../../../infra/repositories/team.repository', () => {
       findBy: (data: any) => [payload],
       findOneBy: (data: any) => {
         if (accountIds.includes(data.id)) return payload
-        if (data.id === 2) return { ...payload, teamId: 1 }
+        if (data.id === 2) {
+          return { accountId: 1 }
+        }
         return null
       },
     },
@@ -71,32 +74,20 @@ describe('User - team operations', () => {
   })
 
   it('Should fail if team not found', async () => {
-    mockReq.body = { ...payload, idTeam: 2 }
+    mockReq.body = { ...payload, idTeam: 3 }
 
     await makeAddUserTeam(mockReq, mockRes)
     expect(mockRes.status).toBeCalledWith(400)
     expect(mockRes.json).toBeCalled()
   })
 
-  // it('Should update member team', async () => {
-  //   mockReq.body = { ...payload, idTeam: 2 }
+  it('Should update member team', async () => {
+    mockReq.body = { idUser: 2, idTeam: 2 }
 
-  //   await makeUpdateUserTeam(mockReq, mockRes)
-  //   expect(mockRes.status).toBeCalledWith(200)
-  //   expect(mockRes.send).toBeCalled()
-  // })
-
-  // it('Should update member team to null', async () => {
-  //   mockReq.body = { idUser: 1 }
-
-  //   await makeUpdateUserTeam(mockReq, mockRes)
-  //   expect(mockRes.status).toBeCalledWith(200)
-  //   expect(mockRes.send).toBeCalledWith({
-  //     idUser: 1,
-  //     idTeam: 1,
-  //     team: undefined,
-  //   })
-  // })
+    await makeUpdateUserTeam(mockReq, mockRes)
+    expect(mockRes.status).toBeCalledWith(200)
+    expect(mockRes.send).toBeCalled()
+  })
 
   it('Should fail if missing idUser', async () => {
     mockReq.body = {}
