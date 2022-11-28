@@ -38,6 +38,6 @@ export class Logs {
   @ManyToOne(() => Team, (team) => team.logs)
   teams: Team[]
 
-  @ManyToOne(() => User, (user) => user.logs)
+  @ManyToOne(() => User, (user) => user.logs, { onDelete: 'CASCADE' })
   user: User
 }
