@@ -44,7 +44,7 @@ export const makeGetTeamMembers = async (req: Request, res: Response) => {
   const data = await addUser(teamId)
 
   if (!data) {
-    return res.status(400).json({ message: 'User could not be added to team' })
+    return res.status(404).json({ message: 'Team not found' })
   }
 
   return res.status(200).send(data)
