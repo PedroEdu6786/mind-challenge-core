@@ -1,5 +1,5 @@
 export type ITeam = {
   id?: number
-  idAccount: number
+  accountId: number
   teamName?: string
 }

@@ -5,8 +5,11 @@ export type IUser = {
   password: string
   englishLevel?: string
   techSkills?: string
+  skills?: string
+  team?: any
   cvLink?: string
   isAdmin?: boolean
   isSuperadmin?: boolean
+  logs?: any
   teamId?: number
 }

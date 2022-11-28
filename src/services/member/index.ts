@@ -38,11 +38,41 @@ export const addUserTeam: BuildMember = async (
   return null
 }
 
+export const getTeamMembers = async (idTeam: number) => {
+  const team = await getTeamById(idTeam)
+
+  if (!team) {
+    return null
+  }
+
+  try {
+    const data = await getTeamMembersById(idTeam)
+    return data
+  } catch (err) {
+    if (err instanceof QueryFailedError) {
+      console.log(err.message)
+    }
+  }
+
+  return null
+}
+
+const getTeamMembersById = async (teamId: number) => {
+  const members = await userRepository.find({
+    where: {
+      teamId,
+    },
+  })
+
+  return members
+}
+
 export const updateUserTeam: UpdateMember = async (
   idUser: number,
   idTeam: number
 ) => {
   const user = (await getUserById(idUser)) as User
+  const pastUser = { ...user }
 
   if (!user) {
     return null
@@ -50,10 +80,10 @@ export const updateUserTeam: UpdateMember = async (
 
   const team = await getTeamById(idTeam)
   user.team = idTeam && team
-  
+
   try {
-    const data = await userRepository.save(user)
-    return data
+    await userRepository.save(user)
+    return pastUser
   } catch (err) {
     if (err instanceof QueryFailedError) {
       console.log(err.message)

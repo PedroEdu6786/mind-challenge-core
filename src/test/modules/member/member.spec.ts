@@ -22,6 +22,7 @@ jest.mock('../../../infra/repositories/user.repository', () => {
       findBy: (data: any) => [payload],
       findOneBy: (data: any) => {
         if (accountIds.includes(data.id)) return payload
+        if (data.id === 2) return { teamId: 1, idTeam: undefined }
         return null
       },
     },
@@ -34,6 +35,9 @@ jest.mock('../../../infra/repositories/team.repository', () => {
       findBy: (data: any) => [payload],
       findOneBy: (data: any) => {
         if (accountIds.includes(data.id)) return payload
+        if (data.id === 2) {
+          return { accountId: 1 }
+        }
         return null
       },
     },
@@ -44,31 +48,6 @@ describe('User - team operations', () => {
   beforeAll(() => {
     mockReq = getMockReq()
     ;({ res: mockRes } = getMockRes())
-
-    jest.mock('../../../infra/repositories/user.repository', () => {
-      return {
-        userRepository: {
-          save: (data: any) => data,
-          findBy: (data: any) => [payload],
-          findOneBy: (data: any) => {
-            if (accountIds.includes(data.id)) return payload
-            return null
-          },
-        },
-      }
-    })
-    jest.mock('../../../infra/repositories/team.repository', () => {
-      return {
-        teamRepository: {
-          save: (data: any) => data,
-          findBy: (data: any) => [payload],
-          findOneBy: (data: any) => {
-            if (accountIds.includes(data.id)) return payload
-            return null
-          },
-        },
-      }
-    })
   })
   it('Should add a user to a team', async () => {
     mockReq.body = payload
@@ -95,7 +74,7 @@ describe('User - team operations', () => {
   })
 
   it('Should fail if team not found', async () => {
-    mockReq.body = { ...payload, idTeam: 2 }
+    mockReq.body = { ...payload, idTeam: 3 }
 
     await makeAddUserTeam(mockReq, mockRes)
     expect(mockRes.status).toBeCalledWith(400)
@@ -103,23 +82,11 @@ describe('User - team operations', () => {
   })
 
   it('Should update member team', async () => {
-    mockReq.body = payload
+    mockReq.body = { idUser: 2, idTeam: 2 }
 
     await makeUpdateUserTeam(mockReq, mockRes)
     expect(mockRes.status).toBeCalledWith(200)
     expect(mockRes.send).toBeCalled()
-  })
-
-  it('Should update member team to null', async () => {
-    mockReq.body = { idUser: 1 }
-
-    await makeUpdateUserTeam(mockReq, mockRes)
-    expect(mockRes.status).toBeCalledWith(200)
-    expect(mockRes.send).toBeCalledWith({
-      idUser: 1,
-      idTeam: 1,
-      team: undefined,
-    })
   })
 
   it('Should fail if missing idUser', async () => {

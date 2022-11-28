@@ -24,9 +24,9 @@ export const createTeam: BuildTeam = async (teamData: ITeam) => {
 }
 
 export const getTeamsByAccountId: GetAccountTeams = async (
-  idAccount: number
+  accountId: number
 ) => {
-  const teams = await teamRepository.findBy({ idAccount })
+  const teams = await teamRepository.findBy({ accountId })
 
   return teams
 }

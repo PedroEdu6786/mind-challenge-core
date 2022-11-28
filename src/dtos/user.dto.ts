@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+} from 'typeorm'
+import { Logs } from './logs.dto'
 import { Team } from './team.dto'
 
 @Entity()
@@ -22,6 +30,9 @@ export class User {
   englishLevel: string
 
   @Column({ default: '' })
+  skills: string
+
+  @Column({ default: '' })
   cvLink: string
 
   @Column({ default: false })
@@ -33,6 +44,9 @@ export class User {
   @Column({ nullable: true })
   teamId: number
 
-  @ManyToOne(() => Team, (team) => team.users)
+  @ManyToOne(() => Team, (team) => team.users, { onDelete: 'SET NULL' })
   team: Team
+
+  @OneToMany(() => Logs, (logs) => logs.user)
+  logs: Logs[]
 }

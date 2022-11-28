@@ -10,7 +10,7 @@ let mockReq: any
 let mockRes: any
 
 const payload: ITeam = {
-  idAccount: 2,
+  accountId: 2,
 }
 
 const accountIds = [1]
@@ -32,15 +32,6 @@ describe('Team module behaviour', () => {
   beforeAll(() => {
     mockReq = getMockReq()
     ;({ res: mockRes } = getMockRes())
-
-    jest.mock('../../../infra/repositories/team.repository', () => {
-      return {
-        teamRepository: {
-          save: (data: any) => data,
-          findBy: (data: any) => [payload],
-        },
-      }
-    })
   })
 
   afterEach(() => {
@@ -64,7 +55,7 @@ describe('Team module behaviour', () => {
   })
 
   it('Should get all teams from an account', async () => {
-    mockReq.params.accountId = payload.idAccount
+    mockReq.params.accountId = payload.accountId
 
     await makeGetAllAccountTeams(mockReq, mockRes)
     expect(mockRes.status).toBeCalledWith(200)

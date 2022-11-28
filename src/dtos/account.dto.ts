@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
+import { Team } from './team.dto'
 
 @Entity()
 export class Account {
@@ -16,4 +17,7 @@ export class Account {
 
   @Column()
   headOfOperation: string
+
+  @OneToMany(() => Team, (team) => team.users)
+  users: Team[]
 }

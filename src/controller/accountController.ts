@@ -13,7 +13,6 @@ export const makeCreateAccount = async (req: Request, res: Response) => {
 
   const { value, error } = await AccountValidator.validate(accountBody)
 
-  console.log(accountBody, error, value)
   if (error) {
     return res.status(400).json({ message: 'Invalid account data', error })
   }

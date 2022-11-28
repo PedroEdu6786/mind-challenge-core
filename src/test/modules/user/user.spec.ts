@@ -41,19 +41,6 @@ describe('User module behaviour', () => {
 
     mockReq = getMockReq()
     ;({ res: mockRes } = getMockRes())
-
-    jest.mock('../../../infra/repositories/user.repository', () => {
-      return {
-        userRepository: {
-          save: (data: any) => data,
-          findOneBy: (data: any) => {
-            if (userIds.includes(data.id)) return payload
-            return null
-          },
-          findBy: (data: any) => [payload],
-        },
-      }
-    })
   })
 
   afterEach(() => {
